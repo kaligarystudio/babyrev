@@ -25,19 +25,14 @@ export function BabyShowerWelcome({
   primaryColor,
   secondaryColor
 }: BabyShowerWelcomeProps) {
-  const [showPlayerForm, setShowPlayerForm] =
-    useState(false);
+  const [showPlayerForm, setShowPlayerForm] = useState(false);
 
   if (showPlayerForm) {
     return (
       <main
         style={{
           minHeight: "100vh",
-          background: `linear-gradient(
-            135deg,
-            ${primaryColor},
-            ${secondaryColor}
-          )`,
+          background: `linear-gradient(135deg, ${primaryColor}, ${secondaryColor})`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -57,11 +52,7 @@ export function BabyShowerWelcome({
     <main
       style={{
         minHeight: "100vh",
-        background: `linear-gradient(
-          135deg,
-          ${primaryColor},
-          ${secondaryColor}
-        )`,
+        background: `linear-gradient(135deg, ${primaryColor}, ${secondaryColor})`,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -72,11 +63,11 @@ export function BabyShowerWelcome({
         style={{
           width: "100%",
           maxWidth: "760px",
-          background: "rgba(255, 255, 255, 0.94)",
+          background: "rgba(255, 255, 255, 0.96)",
           borderRadius: "28px",
           padding: "48px 32px",
           textAlign: "center",
-          boxShadow: "0 20px 60px rgba(0, 0, 0, 0.12)"
+          boxShadow: "0 20px 60px rgba(0, 0, 0, 0.15)"
         }}
       >
         <div
@@ -93,8 +84,7 @@ export function BabyShowerWelcome({
           style={{
             margin: "0 0 12px",
             fontSize: "18px",
-            fontWeight: 700,
-            letterSpacing: "0.04em"
+            fontWeight: 700
           }}
         >
           ¡BIENVENIDOS AL BABY SHOWER!
@@ -144,27 +134,22 @@ export function BabyShowerWelcome({
           }}
         >
           {eventDate && <div>📅 {eventDate}</div>}
-
           {eventTime && <div>🕐 {eventTime}</div>}
-
           {location && <div>📍 {location}</div>}
         </div>
 
+        {/* ZONA DEL JUEGO */}
         <div
           style={{
-            marginTop: "12px",
-            padding: "18px",
-            borderRadius: "20px",
-            background: `linear-gradient(
-              135deg,
-              ${primaryColor},
-              ${secondaryColor}
-            )`
+            padding: "24px",
+            borderRadius: "22px",
+            background: `linear-gradient(135deg, ${primaryColor}, ${secondaryColor})`
           }}
         >
           <div
+            aria-hidden="true"
             style={{
-              fontSize: "28px",
+              fontSize: "36px",
               marginBottom: "8px"
             }}
           >
@@ -173,9 +158,9 @@ export function BabyShowerWelcome({
 
           <p
             style={{
-              margin: "0 0 16px",
-              fontSize: "18px",
-              fontWeight: 700
+              margin: "0 0 18px",
+              fontSize: "20px",
+              fontWeight: 800
             }}
           >
             ¿Listo para ayudar al bebé?
@@ -185,14 +170,16 @@ export function BabyShowerWelcome({
             type="button"
             onClick={() => setShowPlayerForm(true)}
             style={{
-              border: "0",
+              display: "inline-block",
+              border: "none",
               borderRadius: "999px",
-              padding: "14px 34px",
+              padding: "16px 42px",
               background: "#2B2520",
               color: "#FFFFFF",
-              fontSize: "18px",
+              fontSize: "20px",
               fontWeight: 800,
-              cursor: "pointer"
+              cursor: "pointer",
+              boxShadow: "0 8px 20px rgba(0, 0, 0, 0.18)"
             }}
           >
             🎮 JUGAR
