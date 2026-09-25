@@ -15,8 +15,11 @@ export function PlayerNameForm({
 }: PlayerNameFormProps) {
   const [playerName, setPlayerName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
     const normalizedName = playerName.trim();
@@ -26,15 +29,52 @@ export function PlayerNameForm({
     }
 
     setIsSubmitting(true);
+    setError("");
 
-    /*
-     * La conexión con Neon se agregará en el siguiente archivo.
-     * Por ahora solamente validamos la interacción.
-     */
+    try {
+      const pathname = window.location.pathname;
+      const slug = pathname.split("/").filter(Boolean)[0];
 
-    console.log("Player:", normalizedName);
+      if (!slug) {
+        throw new Error(
+          "No se pudo identificar el Baby Shower."
+        );
+      }
 
-    setIsSubmitting(false);
+      const response = await fetch("/api/players", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          slug,
+          playerName: normalizedName
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "No se pudo registrar al jugador."
+        );
+      }
+
+      console.log("Jugador registrado:", data.playerId);
+
+      /*
+       * El siguiente paso será iniciar el juego
+       * utilizando este playerId.
+       */
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : "Ocurrió un error al registrar al jugador."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -50,6 +90,7 @@ export function PlayerNameForm({
       }}
     >
       <div
+        aria-hidden="true"
         style={{
           textAlign: "center",
           fontSize: "52px",
@@ -104,6 +145,7 @@ export function PlayerNameForm({
           autoComplete="name"
           placeholder="Escribe tu nombre"
           required
+          disabled={isSubmitting}
           style={{
             width: "100%",
             padding: "14px 16px",
@@ -111,15 +153,31 @@ export function PlayerNameForm({
             borderRadius: "14px",
             outline: "none",
             fontSize: "18px",
-            marginBottom: "16px"
+            marginBottom: "16px",
+            boxSizing: "border-box"
           }}
         />
 
+        {error && (
+          <p
+            role="alert"
+            style={{
+              margin: "0 0 16px",
+              padding: "12px 14px",
+              borderRadius: "12px",
+              background: "#FDECEC",
+              color: "#B42318",
+              fontSize: "14px",
+              lineHeight: 1.4
+            }}
+          >
+            {error}
+          </p>
+        )}
+
         <button
           type="submit"
-          disabled={
-            !playerName.trim() || isSubmitting
-          }
+          disabled={!playerName.trim() || isSubmitting}
           style={{
             width: "100%",
             border: "0",
@@ -144,7 +202,7 @@ export function PlayerNameForm({
           }}
         >
           {isSubmitting
-            ? "Preparando..."
+            ? "Registrando..."
             : "CONTINUAR →"}
         </button>
       </form>
