@@ -1,3 +1,9 @@
+"use client";
+
+import { useState } from "react";
+
+import { PlayerNameForm } from "@/components/baby-shower/PlayerNameForm";
+
 interface BabyShowerWelcomeProps {
   babyName: string;
   parentsName: string | null;
@@ -19,6 +25,34 @@ export function BabyShowerWelcome({
   primaryColor,
   secondaryColor
 }: BabyShowerWelcomeProps) {
+  const [showPlayerForm, setShowPlayerForm] =
+    useState(false);
+
+  if (showPlayerForm) {
+    return (
+      <main
+        style={{
+          minHeight: "100vh",
+          background: `linear-gradient(
+            135deg,
+            ${primaryColor},
+            ${secondaryColor}
+          )`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "24px"
+        }}
+      >
+        <PlayerNameForm
+          babyName={babyName}
+          primaryColor={primaryColor}
+          secondaryColor={secondaryColor}
+        />
+      </main>
+    );
+  }
+
   return (
     <main
       style={{
@@ -149,6 +183,7 @@ export function BabyShowerWelcome({
 
           <button
             type="button"
+            onClick={() => setShowPlayerForm(true)}
             style={{
               border: "0",
               borderRadius: "999px",
